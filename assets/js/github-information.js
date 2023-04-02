@@ -28,7 +28,7 @@ function fetchGitHubInformation(event) {
             } else {      //otherwise, if the error that comes back is not 404, then the errorResponse will be set to the JSON response that we got back, set by jquery on line 30 + 31
                 console.log(errorResponse);
                 $("#gh-user-data").html(
-                    `<h2>Error: ${errorResponse}.responseJSON.message</h2>`);
+                    `<h2>Error: ${errorResponse}.responseJSON.message</h2>`);  //now this is all set out in the DOM, but not displaying on the web browser screen
             }
         });
 }
