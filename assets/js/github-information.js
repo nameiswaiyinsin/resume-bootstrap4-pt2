@@ -38,10 +38,13 @@ function fetchGitHubInformation(event) {
     //making a promise (to retrieve some information from the Github API)
     $.when(
         $.getJSON(`https://api.github.com/users/${username}`) //in the $.when() promise, pass the getJSON() function with the address of the github api
+        $.getJSON(`https://api.github.com/users/${username}/repos`) //3a. list the repositories for that individual user
     ).then(
-        function (response) { //then display that userData in #gh-user-data div
-            var userData = response; //response is our first argument that came back from our getJSON argument and we will store it in a variable userData.
+        function (firstResponse, secondResponse) { //then display that userData in #gh-user-data div   //3b. since we have 2 promises above, then we need to pass the two responses are the arguments
+            var userData = firstResponse[0]; //response is our first argument that came back from our getJSON argument and we will store it in a variable userData.    //3c. firstResponse is now stored in userData
+            var repoData = secondResponse[0];    //3d. secondResponse is now stored in repoData as it lists the repositories for the individual user we want to retrieve information from
             $("#gh-user-data").html(userInformationHTML(userData)); //then using jquery we can call the #gh-user-data to call the results of another function called userInformationHTML() and userData as the argument in it
+            $("#gh-repo-data").html(repoInformationHTML(repoData));  //3e. 
         },
         function (errorResponse) { //add a function that takes an errorResponse here in case the above code doesnt work out
             if (errorResponse.status === 404) { //if the errorResponse.status is Page not found404, then the #gh-user-data HTML will be set (by jquery) to display "no info found..."
