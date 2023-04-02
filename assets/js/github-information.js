@@ -12,11 +12,29 @@ function userInformationHTML(user) {         //2. calling this function when our
                 </a>
             </div>
             <p>Followers: ${user.followers} - Following ${user.following} <br> Repos: ${user.public_repos}</p>
-        </div>`
-        
+        </div>`        
+};
+
+function repoInformationHTML(repos) {   //4a. rendering the repos data onto the DOM with this function repoInformationHTML()
+    if (repos.length == 0) {            //4b. since the data github returns is in array, then we can check if anything is returned by checking to see if it equals to 0
+        return `<div class="clearfix repo-list">No repos!</div>`; //4c. if the array does equal to 0, it means there is no repos returned.
+    }
+    //4d. if data is returned, then since its an array, we want to iterate through it and get that information out
+    var listItemsHTML = repos.map(function(repo) {
+        return `<li>
+                    <a href="${repo.html_url}" target="_blank">${repo.name}</a>
+                </li>`;
+    });
+
+    return `<div class="clearfix repo-list">
+                <p>
+                    <strong>Repo List:</strong>
+                </p>
+                <ul>
+                    ${listItemsHTML.join("\n")}
+                </ul>
+            </div>`;
 }
-
-
 
 
 function fetchGitHubInformation(event) {
@@ -37,7 +55,7 @@ function fetchGitHubInformation(event) {
 
     //making a promise (to retrieve some information from the Github API)
     $.when(
-        $.getJSON(`https://api.github.com/users/${username}`) //in the $.when() promise, pass the getJSON() function with the address of the github api
+        $.getJSON(`https://api.github.com/users/${username}`), //in the $.when() promise, pass the getJSON() function with the address of the github api
         $.getJSON(`https://api.github.com/users/${username}/repos`) //3a. list the repositories for that individual user
     ).then(
         function (firstResponse, secondResponse) { //then display that userData in #gh-user-data div   //3b. since we have 2 promises above, then we need to pass the two responses are the arguments
