@@ -70,6 +70,9 @@ function fetchGitHubInformation(event) {
             if (errorResponse.status === 404) { //if the errorResponse.status is Page not found404, then the #gh-user-data HTML will be set (by jquery) to display "no info found..."
                 $("#gh-user-data").html(
                     `<h2>No info found for user ${username}</h2>`);
+            } else if(errorResponse.status === 403) {  //Throttling here, so we add a new errorResponse for 403 error
+                var resetTime = new Date(errorResponse.getResponseHeader('X-RateLimit-Reset')*1000);
+                $("#gh-user-data").html(`<h4>Too many requests, please wait until ${resetTime.toLocaleTimeString()}</h4>`);
             } else { //otherwise, if the error that comes back is not 404, then the errorResponse will be set to the JSON response that we got back, set by jquery on line 30 + 31
                 console.log(errorResponse);
                 $("#gh-user-data").html(
