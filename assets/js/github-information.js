@@ -38,6 +38,8 @@ function repoInformationHTML(repos) {   //4a. rendering the repos data onto the 
 
 
 function fetchGitHubInformation(event) {
+    $("#gh-user-data").html("");
+    $("#gh-repo-data").html("");
 
     //storing our username to the id gh-username and allowing it to have a value to be inputted, and changing html content with jquery
     var username = $("#gh-username").val();
@@ -75,3 +77,5 @@ function fetchGitHubInformation(event) {
             }
         });
 }
+
+$(document).ready(fetchGitHubInformation);  //octocat's profile is automatically display when i refresh the page/is loaded
